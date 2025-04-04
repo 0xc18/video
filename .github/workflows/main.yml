@@ -22,7 +22,7 @@ jobs:
         run: pip install yt-dlp
 
       - name: Download from url
-        run: yt-dlp -v -f "bestvideo[height<=720]+bestaudio/best[height<=720]" --merge-output-format mkv -o "%(title)s.%(ext)s" "${{ github.event.inputs.url }}"
+        run: yt-dlp -v -f "bestvideo[height<=720]+bestaudio/best[height<=720]" --merge-output-format mkv -o "output/%(title)s.%(ext)s" "${{ github.event.inputs.url }}"
 
       - name: upload
         run: python upload.py
