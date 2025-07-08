@@ -32,16 +32,17 @@ jobs:
 
       - name: Generate tag from date/time
         id: tagger
+        shell: bash
         run: |
           echo "tag=v$(date +'%Y-%m-%d_%H-%M-%S')" >> "$GITHUB_OUTPUT"
-          echo "body=$(ls output)" >> "$GITHUB_OUTPUT"
+          echo "body=$(ls output | tr '\n' ' ')" >> "$GITHUB_OUTPUT"
 
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ setps.tagger.outputs.tag }}
-          name: ${{ setps.tagger.outputs.body }}
-          body: ${{ setps.tagger.outputs.body }}
+          tag_name: ${{ steps.tagger.outputs.tag }}
+          name: ${{ steps.tagger.outputs.body }}
+          body: ${{ steps.tagger.outputs.body }}
           files: Video0.7z
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
