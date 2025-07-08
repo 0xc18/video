@@ -38,6 +38,7 @@ jobs:
           echo "body=$(ls output | tr '\n' ' ')" >> "$GITHUB_OUTPUT"
 
       - name: Upload to GitHub Release
+        id: release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.tagger.outputs.tag }}
@@ -46,3 +47,22 @@ jobs:
           files: Video0.7z
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Send Discord Notification
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d '{
+                     "username": "Release Bot",
+                     "avatar_url": "https://i.ibb.co.com/CPrt4Dg/1732257842387.jpg",
+                     "content": "**New Release Published!** 🚀",
+                     "embeds": [{
+                       "title": "New Porn Video",
+                       "url": "${{ steps.release.upload_url }}",
+                       "description": "${{ steps.tagger.outputs.body }}",
+                       "color": 5814783
+                     }]
+                   }' \
+               $WEBHOOK_URL
+        env:
+          WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
