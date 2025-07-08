@@ -34,11 +34,18 @@ jobs:
       - name: Zip it up
         run: 7z a -p123 -mhe=on -mx=0 Video0.7z ./output/*
 
+      - name: Generate tag from date/time
+        id: tagger
+        run: |
+          echo "tag=v$(date +'%Y-%m-%d_%H-%M-%S')" >> "$GITHUB_OUTPUT"
+          echo "body=$(ls output)" >> "$GITHUB_OUTPUT"
+
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ github.event.inputs.tag }}
-          name: "Video Download"
+          tag_name: ${{ setps.tagger.outputs.tag }}
+          name: ${{ setps.tagger.outputs.body }}
+          body: ${{ setps.tagger.outputs.body }}
           files: Video0.7z
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
