@@ -41,7 +41,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.tagger.outputs.tag }}
-          name: ${{ steps.tagger.outputs.body }}
+          name: "New Porn Video"
           body: ${{ steps.tagger.outputs.body }}
           files: Video0.7z
         env:
