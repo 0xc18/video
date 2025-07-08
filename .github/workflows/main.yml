@@ -58,7 +58,7 @@ jobs:
                      "content": "**New Release Published!** 🚀",
                      "embeds": [{
                        "title": "New Porn Video",
-                       "url": "${{ steps.release.upload_url }}",
+                       "url": "https://github.com/0xc18/video/releases/latest",
                        "description": "${{ steps.tagger.outputs.body }}",
                        "color": 5814783
                      }]
