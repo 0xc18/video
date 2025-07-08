@@ -30,13 +30,12 @@ jobs:
       - name: Zip it up
         run: 7z a -p123 -mhe=on -mx=0 Video0.7z ./output/*
 
-      - name: Generate tag from date/time
+      - name: Generate tag and body from time and filenames
         id: tagger
         shell: bash
         run: |
           echo "tag=v$(date +'%Y-%m-%d_%H-%M-%S')" >> "$GITHUB_OUTPUT"
           echo "body=$(ls output | tr '\n' ' ')" >> "$GITHUB_OUTPUT"
-          echo "url=$(curl -s https://api.github.com/repos/0xc18/video/releases/latest | jq ".html_url")"
 
       - name: Upload to GitHub Release
         id: release
@@ -59,7 +58,7 @@ jobs:
                      "content": "**New Release Published!** 🚀",
                      "embeds": [{
                        "title": "New Porn Video",
-                       "url": "${{ steps.tagger.url }}",
+                       "url": "${{ steps.release.outputs.url }}",
                        "description": "${{ steps.tagger.outputs.body }}",
                        "color": 5814783
                      }]
